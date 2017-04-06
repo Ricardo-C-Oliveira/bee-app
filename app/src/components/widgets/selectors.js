@@ -20,12 +20,14 @@ export const mapStateToProps = (state) => {
 
     let intersected_area = state.data.intersected_area != null ? state.data.intersected_area.toFixed(2) : null;
 
+    let result_returned = state.data.intersected_area != null ? true : false;
 
     return {
         plants_list: plants_list_arr,
         areas_list: areas_list_arr,
         use_plants,
         use_area,
+        result_returned,
         num_intersected_polys,
         intersected_area
     }
@@ -74,6 +76,10 @@ export const mapDispatchToProps = (dispatch) => {
 
         runSimulation: (params) => {
             dispatch(actions.runSimulation(params))
+        },
+
+        newRun: () => {
+            dispatch(actions.newRun())
         }
     }
 }

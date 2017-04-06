@@ -1,8 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './rootReducer';
-
-import { composeWithDevTools } from 'remote-redux-devtools'
+// import { composeWithDevTools } from 'remote-redux-devtools'
 
 // const store = createStore(
 //     rootReducer,
@@ -12,8 +11,8 @@ import { composeWithDevTools } from 'remote-redux-devtools'
 //     )
 // );
 
-const store = createStore(rootReducer, /* preloadedState, */ composeWithDevTools(
+const store = createStore(rootReducer,
     applyMiddleware(thunkMiddleware)
-));
+    );
 
 export default store;

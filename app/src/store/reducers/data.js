@@ -21,9 +21,7 @@ const initialData = {
 export default (state = initialData, action) => {
     switch (action.type) {
         case t.ADD_FLOWER:
-            console.log(state)
             const newPlant = state.plants.filter(o => o.plant_id.toString() === action.flower.toString())
-            console.log(newPlant)
             newPlant["0"].plant_placement = '50'
 
             return {
@@ -205,6 +203,7 @@ export default (state = initialData, action) => {
             };
 
         case t.RUN_SIMULATION:
+            console.log('hi')
             var params = action.params
 
             let intersection = runSimulation(params, state)
@@ -213,6 +212,16 @@ export default (state = initialData, action) => {
                 ...state,
                 intersected_polys: intersection[0],
                 intersected_area: intersection[1]
+            };
+
+        case t.NEW_RUN:
+            console.log('hey')
+            return{
+                ...state,
+                use_plants: [],
+                use_area: [],
+                intersected_polys: null,
+                intersected_area: null,
             }
 
         default:

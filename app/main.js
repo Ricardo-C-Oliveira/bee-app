@@ -25,7 +25,17 @@ function createWindow() {
       // mainWindow.loadURL(startUrl);
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
+
+    app.on('ready', () => {
+        // Add DevTools Extension,
+        // if you want remove it,
+        // Use: BrowserWindow.removeDevToolsExtension('RemoteDev DevTools');
+        // BrowserWindow.addDevToolsExtension('node_modules/remotedev-extension/dist');
+        // mainWindow.openDevTools();
+
+        // ...
+    });
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -40,6 +50,7 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

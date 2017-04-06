@@ -21,10 +21,12 @@ class FlowersList extends Component {
             addModalState: false,
             newFlowerIndex: '',
             newFlowerName: '',
-            newFlowerRadius: ''
+            newFlowerRadius: '',
+            inputError: false
         }
         this.toggleModal = this.toggleModal.bind(this)
         this.submitNewFlower = this.submitNewFlower.bind(this)
+        this.cancelFlower = this.cancelFlower.bind(this)
         this.deleteFlower = this.deleteFlower.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleIndexChange = this.handleIndexChange.bind(this)
@@ -47,11 +49,34 @@ class FlowersList extends Component {
         const newFlowerIndexVal = this.state.newFlowerIndex
         const newFlowerRadiusVal = this.state.newFlowerRadius
 
-        this.props.addNewFlowerDB({newFlowerNameVal, newFlowerIndexVal, newFlowerRadiusVal})
+        if (newFlowerIndexVal.length == 0 || newFlowerNameVal.length == 0 || newFlowerRadiusVal == 0){
+            this.setState({
+                inputError: true
+            })
+        } else {
+            this.props.addNewFlowerDB({newFlowerNameVal, newFlowerIndexVal, newFlowerRadiusVal})
+            this.setState({
+                newFlowerRadius: '',
+                newFlowerIndex: '',
+                newFlowerName: '',
+                inputError: ''
+            })
+            this.setState({addModalState: false})
+        }
 
         // this.setState({
         //     addModalState: !this.state.addModalState
         // })
+    }
+
+    cancelFlower(){
+        this.setState({addModalState: false})
+        this.setState({
+            newFlowerRadius: '',
+            newFlowerIndex: '',
+            newFlowerName: '',
+            inputError: ''
+        })
     }
 
     handleNameChange(event) {
@@ -82,15 +107,25 @@ class FlowersList extends Component {
         })
 
         return <div>
-            <Modal type="card" headerContent="Add a new flower to the Database" isActive={this.state.addModalState} onCloseRequest={() => this.setState({addModalState: false})}>
+            <Modal type="card" headerContent="Add a new flower to the Database" isActive={this.state.addModalState} onCloseRequest={this.cancelFlower}>
                 <Content>
                     <Label>Flower Name</Label>
-                    <Input type="text" placeholder="Flower Name" onChange={this.handleNameChange}/>
+                    <Input type="text" placeholder="Flower Name" value={this.state.newFlowerName} onChange={this.handleNameChange} help={(this.state.inputError ? {
+                        color: 'isDanger',
+                        text: 'Make sure that all fields are complete!',
+                    } : null)}/>
                     <Label>Flower Index</Label>
-                    <Input type="number" placeholder="Flower Index" onChange={this.handleIndexChange}/>
+                    <Input type="number" placeholder="Flower Index" value={this.state.newFlowerIndex} onChange={this.handleIndexChange} help={(this.state.inputError ? {
+                        color: 'isDanger',
+                        text: 'Make sure that all fields are complete!',
+                    } : null)}/>
                     <Label>Flower Radius</Label>
-                    <Input type="number" placeholder="Flower Radius" onChange={this.handleRadiusChange}/>
+                    <Input type="number" placeholder="Flower Radius" value={this.state.newFlowerRadius} onChange={this.handleRadiusChange} help={(this.state.inputError ? {
+                        color: 'isDanger',
+                        text: 'Make sure that all fields are complete!',
+                    } : null)}/>
                     <Button color="isSuccess" onClick={this.submitNewFlower.bind(this)}>Add Flower</Button>
+                    <Button color="isDanger" onClick={this.cancelFlower} style={{marginLeft: "10px"}}>Cancel</Button>
                 </Content>
             </Modal>
             <Subtitle style={letterstyle}>2. Flower List</Subtitle>

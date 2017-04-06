@@ -26,7 +26,8 @@ class MainMap extends Component {
             newAreaName: '',
             newAreaDescription: '',
             newAreaGeom: '',
-            addAreaHandler: false
+            addAreaHandler: false,
+            inputError: false
         }
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
@@ -56,15 +57,25 @@ class MainMap extends Component {
         const newAreaDescriptionVal = this.state.newAreaDescription
         const newAreaGeomVal = this.state.newAreaGeom
 
-        this.props.addNewAreaDB({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
+        if (newAreaNameVal.length == 0 || newAreaDescriptionVal.length == 0){
+            this.setState({
+                inputError: true
+            })
+        } else {
+            this.props.addNewAreaDB({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
 
-        this.setState({
-            editModal: !this.state.editModal,
-            addAreaHandler: !this.state.addAreaHandler
-        })
+            this.setState({
+                editModal: !this.state.editModal,
+                addAreaHandler: !this.state.addAreaHandler,
+                newAreaName: '',
+                newAreaDescription: '',
+                newAreaGeom: '',
+                inputError: false
+            })
 
-        this.refs.layergroup.leafletElement.removeLayer(layer)
-        this.toggleAddAreaHandler
+            this.refs.layergroup.leafletElement.removeLayer(layer)
+            this.toggleAddAreaHandler
+        }
     }
 
     cancelArea() {
@@ -73,7 +84,10 @@ class MainMap extends Component {
 
         this.toggleModal()
         this.setState({
-            addAreaHandler: !this.state.addAreaHandler
+            addAreaHandler: !this.state.addAreaHandler,
+            newAreaName: '',
+            newAreaDescription: '',
+            inputError: false
         })
     }
 
@@ -88,7 +102,6 @@ class MainMap extends Component {
 
         this.toggleModal()
         this.handleNewGeometry(JSON.stringify(layer.toGeoJSON()))
-        console.log(layer)
         this.setState({
             newLayer: layer
         })
@@ -120,8 +133,10 @@ class MainMap extends Component {
     componentDidUpdate(){
         let layergroup = this.refs.layergroup.leafletElement._layers
         let layer = layergroup[Object.getOwnPropertyNames(layergroup)[0]]._layers
-        let layerBounds = layer[Object.getOwnPropertyNames(layer)[0]]._bounds
-        this.refs.map.leafletElement.fitBounds(layerBounds)
+        if (layer !== undefined) {
+            let layerBounds = layer[Object.getOwnPropertyNames(layer)[0]]._bounds
+            this.refs.map.leafletElement.fitBounds(layerBounds)
+        }
     }
 
 
@@ -129,7 +144,7 @@ class MainMap extends Component {
         // clean this, make (this.props.use_area a variable and re-use it, fill area popup
         const areaLayer = (this.props.use_area.length > 0 ?
              <GeoJSON key={this.props.use_area["0"].area_id} data={JSON.parse(this.props.use_area["0"].geom)}>
-                 <Popup><Label>{this.props.use_area["0"].study_area}</Label></Popup>
+                 <Popup><Label><p>Study Area Name: {this.props.use_area["0"].study_area}</p><p>Study Area Description: {this.props.use_area["0"].study_descr}</p></Label></Popup>
                  </GeoJSON>
          : null)
         const intersectedLayer = (this.props.intersected_polys != null ?
@@ -156,12 +171,18 @@ class MainMap extends Component {
                     this.state.addAreaHandler ? <Button className="add-btn" color="isDanger" onClick={this.toggleAddAreaHandler}>Cancel</Button>
                     : <Button className="add-btn" color="isPrimary" onClick={this.toggleAddAreaHandler}>Add New Area</Button>
                 }
-                <Modal isActive={this.state.editModal} type="card" headerContent="Add this Study Area to the Database" onCloseRequest={() => this.setState({editModal: false})}>
+                <Modal isActive={this.state.editModal} type="card" headerContent="Add this Study Area to the Database" onCloseRequest={this.cancelArea}>
                     <Content>
                         <Label>Area Name</Label>
-                        <Input type="text" placeholder="Arena Name" onChange={this.handleNameChange}/>
+                        <Input ref="areaNameField" type="text" placeholder="Arena Name" value={this.state.newAreaName} onChange={this.handleNameChange} help={(this.state.inputError ? {
+                            color: 'isDanger',
+                            text: 'Make sure that all fields are complete!',
+                        } : null)}/>
                         <Label>Study Area Description</Label>
-                        <Input type="text" placeholder="Study Area Description" onChange={this.handleDescriptionChange}/>
+                        <Input type="text" placeholder="Study Area Description" value={this.state.newAreaDescription} onChange={this.handleDescriptionChange} help={(this.state.inputError ? {
+                            color: 'isDanger',
+                            text: 'Make sure that all fields are complete!',
+                        } : null)}/>
                         <Button color="isSuccess" onClick={this.submitArea}>Add Area</Button>
                         <Button color="isDanger" onClick={this.cancelArea} style={{marginLeft: "10px"}}>Remove Area</Button>
                     </Content>

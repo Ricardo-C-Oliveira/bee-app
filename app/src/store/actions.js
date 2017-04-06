@@ -98,4 +98,12 @@ export const runSimulation = (params) => {
         type: t.RUN_SIMULATION,
         params
     }
-}
+};
+
+export const newRun = () => {
+    console.log('Cleaning all for new run.')
+
+    return {
+        type: t.NEW_RUN
+    }
+};
