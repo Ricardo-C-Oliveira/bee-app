@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { mapStateToProps, mapDispatchToProps } from './selectors';
 import { connect } from 'react-redux';
 import { Modal, Content, Button } from 're-bulma';
+// import Toggle from 'react-toggle'
 
 
 //Load the db from a file path and populate the main store

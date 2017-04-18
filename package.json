@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-toggle": "^3.0.1",
+    "wellknown": "^0.5.0"
+  }
+}

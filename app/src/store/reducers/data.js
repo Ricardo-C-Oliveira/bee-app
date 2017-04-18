@@ -4,6 +4,7 @@ import * as sql from 'sql.js';
 import Intersect from 'turf-intersect';
 import Area from 'turf-area';
 import * as turf from 'turf';
+import * as wellknown from 'wellknown';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -161,6 +162,20 @@ export default (state = initialData, action) => {
                 ':descr': newAreaDescriptionVal,
                 ':geom': newAreaGeomVal
             });
+
+            var payload = {};
+            payload['newAreaNameVal'] = newAreaNameVal
+            payload['newAreaDescriptionVal'] = newAreaDescriptionVal
+            payload['newAreaGeomVal'] = wellknown.stringify((JSON.parse(newAreaGeomVal).geometry))
+
+            fetch('http://beeapp-webgisapps.rhcloud.com/studyareas', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
 
             fs.writeFile(loadedDBPath, loadedDB.export())
 

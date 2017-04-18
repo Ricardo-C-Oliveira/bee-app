@@ -99,7 +99,8 @@ class MainMap extends Component {
 
     _onCreate(e) {
         layer = e.layer
-
+        console.log(layer.toGeoJSON())
+        console.log(layer.toGeoJSON().geometry)
         this.toggleModal()
         this.handleNewGeometry(JSON.stringify(layer.toGeoJSON()))
         this.setState({
