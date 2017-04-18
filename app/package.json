@@ -2,6 +2,7 @@
   "name": "bee_app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "main": "main.js",
   "dependencies": {
     "axios": "^0.15.3",
@@ -9,11 +10,9 @@
     "leaflet": "^1.0.3",
     "leaflet-draw": "^0.4.9",
     "lodash": "^4.17.4",
-    "rc-progress": "^2.1.0",
     "rc-slider": "^6.1.2",
     "re-bulma": "^0.3.1",
     "react": "15.4.2",
-    "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "15.4.2",
     "react-leaflet": "^1.1.0",
     "react-leaflet-draw": "^0.15.0",
@@ -35,6 +34,7 @@
     "electron": "electron .",
     "electron-dev-osx": "ELECTRON_START_URL=http://localhost:3000 electron .",
     "electron-dev-win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "electron-build": "electron-packager ./build --overwrite",
     "remotedev": "remotedev --hostname=localhost --port=8000 --maxRequestBody='1000mb'"
   }
 }

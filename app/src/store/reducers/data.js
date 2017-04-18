@@ -218,7 +218,6 @@ export default (state = initialData, action) => {
             };
 
         case t.RUN_SIMULATION:
-            console.log('hi')
             var params = action.params
 
             let intersection = runSimulation(params, state)
@@ -226,17 +225,18 @@ export default (state = initialData, action) => {
             return{
                 ...state,
                 intersected_polys: intersection[0],
-                intersected_area: intersection[1]
+                intersected_area: intersection[1],
+                flowers_result: intersection[2]
             };
 
         case t.NEW_RUN:
-            console.log('hey')
             return{
                 ...state,
                 use_plants: [],
                 use_area: [],
                 intersected_polys: null,
                 intersected_area: null,
+                flowers_result: null
             }
 
         default:
@@ -256,6 +256,7 @@ function parseDB (db, dbPath){
         var loadedDBPath = dbPath
         var fileBuffer = fs.readFileSync(loadedDBPath)
         var reloadedDB = new sql.Database(fileBuffer)
+        console.log(reloadedDB.exec("SELECT `name`, `sql` FROM `sqlite_master` WHERE type='table';"))
         var flowerTable = reloadedDB.exec('select * from flowers;')
         var areaTable = reloadedDB.exec('select * from study_areas;')
     }
@@ -301,6 +302,8 @@ function runSimulation (params, state) {
     var studyArea = params.choseArea
     var flowers = params.choseFlowers
 
+    console.log(flowers)
+
     //INTERSECT study_area against parcels and calc total area
     var studyAreaGeomFeature = JSON.parse(studyArea[0].geom)
 
@@ -322,8 +325,19 @@ function runSimulation (params, state) {
     var areaSqMeters = Area(intersectiontest)
 
     //Generate geometries for each plant based on the plant_radius
+    let flowerResults = []
+    flowers.forEach((flower) => {
+      let flowersNumber = Math.floor((areaSqMeters * (flower.plant_placement/100)) / (flower.plant_radius * flower.plant_radius * Math.PI))
+      let flowerScore = flowersNumber * flower.plant_index
 
+      var obj = {}
+      obj['name'] = flower.plant_name
+      obj['number_flowers'] = flowersNumber
+      obj['flower_score'] = flowerScore
+
+      flowerResults.push(obj)
+    })
     //Do some magic to get final score
 
-    return [intersectiontest, areaSqMeters]
+    return [intersectiontest, areaSqMeters, flowerResults]
 }

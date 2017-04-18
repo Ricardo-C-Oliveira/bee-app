@@ -95,13 +95,13 @@ class FlowersList extends Component {
         var letterstyle = {
             color: "white"
         };
-
+        console.log(this.props.plants_list)
         const plants = this.props.plants_list.map((plant) => {
             return <li key={'flower_' + plant.plant_id} className="input-item" id={plant.plant_id} onClick={this.props.toggleFlower}>
                 <input type="checkbox" checked={(this.props.use_plants.length === 0
                     ? false
                     : this.props.use_plants.forEach((plantOnList) => (plantOnList.plant_id === plant.plant_id)))} id={plant.plant_id}/>
-                <label id={plant.plant_id}>{plant.plant_name}</label>
+                  <label id={plant.plant_id}>{plant.plant_name} (Index: {plant.plant_index}, Size: {plant.plant_radius})</label>
                 <i className="fa fa-times-circle delete-icon" onClick={this.deleteFlower.bind(this, plant.plant_id)}/>
             </li>
         })
@@ -120,7 +120,7 @@ class FlowersList extends Component {
                         text: 'Make sure that all fields are complete!',
                     } : null)}/>
                     <Label>Flower Radius</Label>
-                    <Input type="number" placeholder="Flower Radius" value={this.state.newFlowerRadius} onChange={this.handleRadiusChange} help={(this.state.inputError ? {
+                    <Input type="number" placeholder="Flower Radius in Meters" value={this.state.newFlowerRadius} onChange={this.handleRadiusChange} help={(this.state.inputError ? {
                         color: 'isDanger',
                         text: 'Make sure that all fields are complete!',
                     } : null)}/>
