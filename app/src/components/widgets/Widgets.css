@@ -121,3 +121,8 @@
     height: 37vh;
     margin-bottom: 0px;
 }
+#results-pane{
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #97b6d7;
+}

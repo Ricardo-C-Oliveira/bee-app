@@ -9,7 +9,7 @@ class ConnectDB extends Component{
     constructor(props){
         super(props)
         this.state = {
-            modalState: true
+            connectDBModalState: true
         }
         this.toggleModal = this.toggleModal.bind(this)
         this.getpath = this.getpath.bind(this)
@@ -17,17 +17,17 @@ class ConnectDB extends Component{
 
     toggleModal() {
         this.setState({
-            modalState: !this.state.modalState
+            connectDBModalState: !this.state.connectDBModalState
         })
     }
 
     getpath() {
-        // const pathDB = document.getElementById("fileDB").files[0].path
-        // const pathGeoJSON = document.getElementById("fileGeoJSON").files[0].path
+        const pathDB = document.getElementById("fileDB").files[0].path
+        const pathGeoJSON = document.getElementById("fileGeoJSON").files[0].path
 
         //TODO: Remove these
-        const pathDB = '/Users/ricardooliveira/GIS/bee_app/bee_db.db'
-        const pathGeoJSON = '/Users/ricardooliveira/GIS/bee_app/parcels.geojson'
+        // const pathDB = '/Users/ricardooliveira/GIS/bee_app/bee_db.db'
+        // const pathGeoJSON = '/Users/ricardooliveira/GIS/bee_app/parcels.geojson'
 
         this.props.loadDBFromDisk(pathDB)
         this.props.loadGeoJSONFromDisk(pathGeoJSON)
@@ -41,8 +41,8 @@ class ConnectDB extends Component{
             <Modal
                 type="card"
                 headerContent="Connect to Data Sources"
-                isActive={this.state.modalState}
-                onCloseRequest={() => this.setState({ modalState: false })}
+                isActive={this.state.connectDBModalState}
+                onCloseRequest={() => this.setState({ connectDBModalState: false })}
             >
                 <Content>
                     Choose SQLite Database: <input id="fileDB" type="file"/>

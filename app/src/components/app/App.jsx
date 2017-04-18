@@ -6,6 +6,7 @@ import FlowersList from '../widgets/FlowersList';
 import StudyAreasList from '../widgets/StudyAreaList';
 import PlaceFlowers from '../widgets/PlaceFlowers';
 import ConnectDB from '../widgets/ConnectDB';
+import Info from '../widgets/Info';
 import Results from '../widgets/Results';
 import {Tile, Title, Subtitle} from 're-bulma'
 
@@ -23,6 +24,7 @@ class App extends Component {
           <header className="navbar navbar-default header">
               {/*<div className="title">Bee Caring Capacity</div>*/}
               <Title className="title">BEE CARRYING CAPACITY TOOLKIT</Title>
+            <Info className="navbar-icon"/>
             <ConnectDB className="navbar-icon"/>
             {/*<i className="navbar-icon fa fa-database fa-2x title"/>*/}
           </header>

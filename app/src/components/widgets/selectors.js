@@ -20,6 +20,8 @@ export const mapStateToProps = (state) => {
 
     let intersected_area = state.data.intersected_area != null ? state.data.intersected_area.toFixed(2) : null;
 
+    let flowers_result = state.data.flowers_result != null ? state.data.flowers_result : null;
+
     let result_returned = state.data.intersected_area != null ? true : false;
 
     return {
@@ -29,7 +31,8 @@ export const mapStateToProps = (state) => {
         use_area,
         result_returned,
         num_intersected_polys,
-        intersected_area
+        intersected_area,
+        flowers_result
     }
 }
 

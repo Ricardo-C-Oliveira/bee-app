@@ -24,6 +24,13 @@ function createWindow() {
       //     });
       // mainWindow.loadURL(startUrl);
 
+      // mainWindow.loadURL(
+      //     process.env.ELECTRON_DEV ?
+      //     'http://localhost:3000' // Dev server ran by react-scripts
+      //     :
+      //     `file://${path.join(__dirname, '/build/index.html')}` // Bundled application
+      // );
+
     // Open the DevTools.
     // mainWindow.webContents.openDevTools();
 

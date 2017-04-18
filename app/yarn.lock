@@ -4387,10 +4387,6 @@ rc-animate@2.x:
   dependencies:
     css-animation "^1.3.0"
 
-rc-progress@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/rc-progress/-/rc-progress-2.1.0.tgz#b9072b1f8dcbbb4763f3ee66a42becb457113966"
-
 rc-slider@^6.1.2:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-6.3.1.tgz#67ce34360902d69258efe0010b69de80db750cc3"
@@ -4437,13 +4433,6 @@ re-bulma@^0.3.1:
   resolved "https://registry.yarnpkg.com/re-bulma/-/re-bulma-0.3.2.tgz#5c9e876b22a3a53625a972d1ffb7ddfdb292ec7a"
   dependencies:
     insert-css "^0.2.0"
-
-react-addons-css-transition-group@^15.4.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-addons-css-transition-group/-/react-addons-css-transition-group-15.4.2.tgz#b7828834dfa14229fe07750e331e8a8cb6fb7745"
-  dependencies:
-    fbjs "^0.8.4"
-    object-assign "^4.1.0"
 
 react-dev-utils@^0.5.2:
   version "0.5.2"

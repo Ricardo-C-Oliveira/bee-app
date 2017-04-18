@@ -61,7 +61,7 @@ class PlaceFlowers extends Component{
             </Menu>
             {this.state.totalPlacement > 100 ?
                 <Notification color="isDanger" className="placement-notification" size="is6">Sum of all flowers exceed 100% of available land, please alter the placement.</Notification> :
-                <Button color="isSuccess" className="run-btn" onClick={this.runSimulation}>Run Simulation</Button>}
+                <Button color="isSuccess" className="run-btn" state={(this.props.use_plants.length > 0 & this.props.use_area.length > 0 ? "" : "isDisabled")} onClick={this.runSimulation}>Run Simulation</Button>}
             </div>
     }
 }
