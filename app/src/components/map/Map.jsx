@@ -62,19 +62,24 @@ class MainMap extends Component {
                 inputError: true
             })
         } else {
-            this.props.addNewAreaDB({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
+            if (this.props.dbType === 'cloud') {
+                this.setState({
+                    editModal: !this.state.editModal,
+                    addAreaHandler: !this.state.addAreaHandler,
+                    newAreaName: '',
+                    newAreaDescription: '',
+                    newAreaGeom: '',
+                    inputError: false
+                })
 
-            this.setState({
-                editModal: !this.state.editModal,
-                addAreaHandler: !this.state.addAreaHandler,
-                newAreaName: '',
-                newAreaDescription: '',
-                newAreaGeom: '',
-                inputError: false
-            })
+                this.refs.layergroup.leafletElement.removeLayer(layer)
+                this.toggleAddAreaHandler
 
-            this.refs.layergroup.leafletElement.removeLayer(layer)
-            this.toggleAddAreaHandler
+                this.props.addNewAreaDBCloud({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
+
+            } else {
+                this.props.addNewAreaDB({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
+            }
         }
     }
 

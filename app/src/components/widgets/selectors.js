@@ -24,6 +24,13 @@ export const mapStateToProps = (state) => {
 
     let result_returned = state.data.intersected_area != null ? true : false;
 
+    let dbType = state.data.dbType
+
+    let error_msg = state.data.error_msg != null ? state.data.error_msg : null
+
+    let error_modal = state.data.error_modal != null ? state.data.error_modal : null
+
+    console.log(error_modal)
     return {
         plants_list: plants_list_arr,
         areas_list: areas_list_arr,
@@ -32,7 +39,10 @@ export const mapStateToProps = (state) => {
         result_returned,
         num_intersected_polys,
         intersected_area,
-        flowers_result
+        flowers_result,
+        dbType,
+        error_msg,
+        error_modal
     }
 }
 
@@ -83,6 +93,26 @@ export const mapDispatchToProps = (dispatch) => {
 
         newRun: () => {
             dispatch(actions.newRun())
-        }
+        },
+
+        chooseDBType: (dbType) => {
+            dispatch(actions.chooseDBType(dbType))
+        },
+
+        loadDBFromCloud: () => {
+            dispatch(actions.connectDatabaseCloud())
+        },
+
+        removeAreaDBCloud: (areaID) => {
+            dispatch(actions.removeAreaDBCloud(areaID))
+        },
+
+        removeFlowerDBCloud: (flowerID) => {
+            dispatch(actions.removeFlowerDBCloud(flowerID))
+        },
+
+        addNewFlowerDBCloud: (newFlower) => {
+            dispatch(actions.addFlowerDBCloud(newFlower))
+        },
     }
 }

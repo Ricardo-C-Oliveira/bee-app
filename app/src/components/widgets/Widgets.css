@@ -126,3 +126,27 @@
   padding-right: 10px;
   background-color: #97b6d7;
 }
+.custom-classname.react-toggle--checked .react-toggle-track {
+    background-color: #2dab54;
+    color: white;
+}
+.custom-classname > div.react-toggle-track {
+    background-color: #2dab54;
+    color: white
+}
+.custom-classname > div.react-toggle-track:hover {
+    background-color: #2dab54;
+    color: white
+}
+.custom-classname.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+    background-color: #2dab54;
+}
+.custom-classname.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+    background-color: #2dab54;
+}
+#root > div > header > div:nth-child(4) > div > div.__re-bulma_modal-card.__re-bulma_modal_card > section > div > article > div.__re-bulma_message-header{
+    padding: 5px;
+}
+#root > div > header > div:nth-child(4) > div > div.__re-bulma_modal-card.__re-bulma_modal_card > section > div > article > div.__re-bulma_message-body{
+    padding: 5px;
+}

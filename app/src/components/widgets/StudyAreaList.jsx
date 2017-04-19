@@ -17,7 +17,12 @@ class StudyAreasList extends Component {
 
     deleteArea(e) {
         console.log(e)
-        this.props.removeAreaDB(e)
+
+        if (this.props.dbType === 'cloud'){
+            this.props.removeAreaDBCloud(e)
+        } else {
+            this.props.removeAreaDB(e)
+        }
     }
 
     render(){

@@ -41,7 +41,12 @@ class FlowersList extends Component {
 
     deleteFlower(e) {
         console.log(e)
-        this.props.removeFlowerDB(e)
+
+        if (this.props.dbType === 'cloud'){
+            this.props.removeFlowerDBCloud(e)
+        } else {
+            this.props.removeFlowerDB(e)
+        }
     }
 
     submitNewFlower() {
@@ -54,14 +59,26 @@ class FlowersList extends Component {
                 inputError: true
             })
         } else {
-            this.props.addNewFlowerDB({newFlowerNameVal, newFlowerIndexVal, newFlowerRadiusVal})
-            this.setState({
-                newFlowerRadius: '',
-                newFlowerIndex: '',
-                newFlowerName: '',
-                inputError: ''
-            })
-            this.setState({addModalState: false})
+            if (this.props.dbType === 'cloud') {
+                this.setState({
+                    newFlowerRadius: '',
+                    newFlowerIndex: '',
+                    newFlowerName: '',
+                    inputError: ''
+                })
+                this.setState({addModalState: false})
+
+                this.props.addNewFlowerDBCloud({newFlowerNameVal, newFlowerIndexVal, newFlowerRadiusVal})
+            } else {
+                this.props.addNewFlowerDB({newFlowerNameVal, newFlowerIndexVal, newFlowerRadiusVal})
+                this.setState({
+                    newFlowerRadius: '',
+                    newFlowerIndex: '',
+                    newFlowerName: '',
+                    inputError: ''
+                })
+                this.setState({addModalState: false})
+            }
         }
 
         // this.setState({

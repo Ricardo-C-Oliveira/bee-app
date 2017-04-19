@@ -4,7 +4,6 @@ import * as sql from 'sql.js';
 import Intersect from 'turf-intersect';
 import Area from 'turf-area';
 import * as turf from 'turf';
-import * as wellknown from 'wellknown';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -16,7 +15,8 @@ const initialData = {
     use_area: [],
     intersected_polys: null,
     intersected_area: null,
-    errorModal: false
+    error_modal: false,
+    dbType: 'cloud'
 };
 
 export default (state = initialData, action) => {
@@ -77,13 +77,47 @@ export default (state = initialData, action) => {
 
             const parsedGeoJSON = JSON.parse(geoJSONFile);
 
-            // console.log(parsedGeoJSON)
-
             return {
                 ...state,
                 parsedGeoJSON
             };
 
+        case t.CONNECT_DATABASE_CLOUD:
+            let dbData = action.data
+            let flowers = dbData[1]
+
+            let study_areas = dbData[0]
+
+            console.log(study_areas.features)
+            let allAreas = []
+            study_areas.features.map((record) => {
+                console.log(record)
+
+                var obj = {}
+                obj['area_id'] = record.properties.area_id
+                obj['study_descr'] = record.properties.study_descr
+                obj['study_area'] = record.properties.study_area
+                obj['geom'] = JSON.stringify(record.geometry)
+                allAreas.push(obj)
+            })
+
+            console.log(allAreas)
+
+            return {
+                ...state,
+                plants: flowers,
+                study_areas: allAreas,
+                use_plants: [],
+                use_areas: []
+            }
+
+        case t.ON_ERROR:
+            console.log(action)
+            return {
+                ...state,
+                error_modal: true,
+                error_msg: action.error.toString()
+            }
 
         case t.ADD_FLOWER_DB:
             let loadedDB = state.dbObj
@@ -163,20 +197,6 @@ export default (state = initialData, action) => {
                 ':geom': newAreaGeomVal
             });
 
-            var payload = {};
-            payload['newAreaNameVal'] = newAreaNameVal
-            payload['newAreaDescriptionVal'] = newAreaDescriptionVal
-            payload['newAreaGeomVal'] = wellknown.stringify((JSON.parse(newAreaGeomVal).geometry))
-
-            fetch('http://beeapp-webgisapps.rhcloud.com/studyareas', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            })
-
             fs.writeFile(loadedDBPath, loadedDB.export())
 
             loadedDB.close()
@@ -237,6 +257,13 @@ export default (state = initialData, action) => {
                 intersected_polys: null,
                 intersected_area: null,
                 flowers_result: null
+            };
+
+        case t.CHOOSE_DB_TYPE:
+            console.log(action.dbType)
+            return{
+                ...state,
+                dbType: action.dbType
             }
 
         default:
@@ -296,6 +323,54 @@ function parseDB (db, dbPath){
     }
 
   return [allFlowers, allAreas]
+}
+
+function parseDBCloud () {
+    let allAreas
+    let allFlowers
+
+    // Get areas data
+    fetch('http://beeapp-webgisapps.rhcloud.com/studyareas')
+        .then(
+            function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+                }
+                // Examine the text in the response
+                response.json().then(function (data) {
+                    allAreas = data;
+                });
+
+                // Get flowers data
+                fetch('http://beeapp-webgisapps.rhcloud.com/flowers')
+                    .then(
+                        function (response) {
+                            if (response.status !== 200) {
+                                console.log('Looks like there was a problem. Status Code: ' +
+                                    response.status);
+                                return;
+                            }
+                            // Examine the text in the response
+                            response.json().then(function (data) {
+                                allFlowers = data
+
+                                console.log(allAreas)
+                                console.log(allFlowers)
+
+                                return [allFlowers, allAreas]
+                            });
+                        }
+                    )
+                    .catch(function (err) {
+                        console.log('Fetch Error :-S', err);
+                    });
+            }
+        )
+        .catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
 }
 
 function runSimulation (params, state) {

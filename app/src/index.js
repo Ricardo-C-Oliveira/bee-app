@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store'
 import './index.css';
 import 'font-awesome/css/font-awesome.css'
+import 'react-toggle/style.css'
 
 ReactDOM.render(
     <Provider store={store}>

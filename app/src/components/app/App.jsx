@@ -8,6 +8,7 @@ import PlaceFlowers from '../widgets/PlaceFlowers';
 import ConnectDB from '../widgets/ConnectDB';
 import Info from '../widgets/Info';
 import Results from '../widgets/Results';
+import ErrorModal from '../widgets/ErrorModal';
 import {Tile, Title, Subtitle} from 're-bulma'
 
 import './App.css';
@@ -26,6 +27,7 @@ class App extends Component {
               <Title className="title">BEE CARRYING CAPACITY TOOLKIT</Title>
             <Info className="navbar-icon"/>
             <ConnectDB className="navbar-icon"/>
+            <ErrorModal className="navbar-icon"/>
             {/*<i className="navbar-icon fa fa-database fa-2x title"/>*/}
           </header>
 
