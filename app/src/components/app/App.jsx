@@ -28,14 +28,6 @@ class App extends Component {
 
     return (
       <div className="App">
-          {/*<header className="navbar navbar-default header">*/}
-
-              {/*<Title className="title"> <img src={beeimg} height="40" width="40"/> BEE CARRYING CAPACITY APP</Title>*/}
-            {/*<Info className="navbar-icon"/>*/}
-            {/*<ErrorModal className="navbar-icon"/>*/}
-            {/*<RunningSim/>*/}
-          {/*</header>*/}
-
         <Nav>
           <NavGroup align="left" className="navbar navbar-default header">
             <NavItem>
