@@ -18,15 +18,11 @@ class StudyAreasList extends Component {
     deleteArea(e) {
         console.log(e)
 
-        if (this.props.dbType === 'cloud'){
-            this.props.removeAreaDBCloud(e)
-        } else {
-            this.props.removeAreaDB(e)
-        }
+        this.props.removeAreaDBCloud(e)
     }
 
     render(){
-        var letterstyle = {color: "white"}
+        var letterstyle = {color: "black"}
         const areas = this.props.areas_list.map((area) =>
             <li key={"study_area_" + area.area_id} className="input-item" id={area.area_id} onClick={this.props.toggleArea}>
                 <input type="checkbox" checked={(this.props.use_area.length > 0 ? (this.props.use_area["0"].area_id !== area.area_id
@@ -36,7 +32,7 @@ class StudyAreasList extends Component {
                 <i className="fa fa-times-circle delete-icon" onClick={this.deleteArea.bind(this, area.area_id)}/>
             </li>)
         return <div>
-        <Subtitle style={letterstyle}>1. Study Areas</Subtitle>
+        <Subtitle style={letterstyle}>1. Select Study Area</Subtitle>
 
             <div className="menu-list" id="area-list">
                 <Menu>

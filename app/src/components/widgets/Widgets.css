@@ -44,6 +44,13 @@
     box-shadow: 0 2px  3px #130606;
 }
 
+.default-btn{
+    /*bottom: 10px;*/
+    position: absolute;
+    width: calc(100% - 20px);
+    box-shadow: 0 2px  3px #130606;
+}
+
 .add-btn{
     bottom: 10px;
     position: absolute;
@@ -72,13 +79,14 @@
 }
 
 .result-tile{
-    background-color: #6aa2de;
+    background-color: #4d9ad4;
     box-shadow: 0 2px  5px #130606;
     max-height: 100%;
 }
 
 .navbar-icon{
     float: right;
+    z-index: 999999;
 }
 
 .navbar-icon:hover{
@@ -124,29 +132,23 @@
 #results-pane{
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #97b6d7;
-}
-.custom-classname.react-toggle--checked .react-toggle-track {
-    background-color: #2dab54;
-    color: white;
-}
-.custom-classname > div.react-toggle-track {
-    background-color: #2dab54;
-    color: white
-}
-.custom-classname > div.react-toggle-track:hover {
-    background-color: #2dab54;
-    color: white
-}
-.custom-classname.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-    background-color: #2dab54;
-}
-.custom-classname.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-    background-color: #2dab54;
+  background-color: rgb(103, 223, 166);
 }
 #root > div > header > div:nth-child(4) > div > div.__re-bulma_modal-card.__re-bulma_modal_card > section > div > article > div.__re-bulma_message-header{
     padding: 5px;
 }
 #root > div > header > div:nth-child(4) > div > div.__re-bulma_modal-card.__re-bulma_modal_card > section > div > article > div.__re-bulma_message-body{
     padding: 5px;
+}
+.parameter-descr{
+    font-weight: lighter;
+    color: white;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    word-break: break-word;
+}
+.result{
+    font-weight: lighter;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: white;
+    /*font-weight: bold;*/
 }

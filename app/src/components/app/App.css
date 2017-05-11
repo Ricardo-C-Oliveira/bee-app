@@ -14,8 +14,16 @@
   margin: 0;
   border: 0;
   border-radius: 0;
-  height: 50px;
+  height: 50px !important;
   box-shadow: 0 2px  5px #130606;
+}
+
+#root > div > nav > div.__re-bulma_nav-right{
+  height: 50px;
+}
+
+#root > div > nav > div.__re-bulma_nav-left.navbar.navbar-default.header{
+  padding-left: 20px;
 }
 
 .title{
@@ -52,10 +60,11 @@
 }
 
 .tile-main{
-  margin-top: 50px !important;
+  /*margin-top: 10px !important;*/
   margin-left: 10px !important;
   margin-right: 10px !important;
   height: calc(100vh - 60px);
+  padding-top: 10px;
 }
 .upper-tiles{
   max-height: 50%

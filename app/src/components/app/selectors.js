@@ -11,6 +11,10 @@ export const mapDispatchToProps = (dispatch) => {
     return {
         fetchData: () => {
             dispatch(actions.fetchData());
-        }
+        },
+
+        loadDBFromCloud: () => {
+            dispatch(actions.connectDatabaseCloud())
+        },
     }
 }

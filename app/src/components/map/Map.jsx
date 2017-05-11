@@ -27,7 +27,8 @@ class MainMap extends Component {
             newAreaDescription: '',
             newAreaGeom: '',
             addAreaHandler: false,
-            inputError: false
+            inputError: false,
+            shouldZoom: true
         }
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
@@ -62,24 +63,21 @@ class MainMap extends Component {
                 inputError: true
             })
         } else {
-            if (this.props.dbType === 'cloud') {
-                this.setState({
-                    editModal: !this.state.editModal,
-                    addAreaHandler: !this.state.addAreaHandler,
-                    newAreaName: '',
-                    newAreaDescription: '',
-                    newAreaGeom: '',
-                    inputError: false
-                })
+            this.setState({
+                editModal: !this.state.editModal,
+                addAreaHandler: !this.state.addAreaHandler,
+                newAreaName: '',
+                newAreaDescription: '',
+                newAreaGeom: '',
+                inputError: false,
+                shouldZoom: !this.state.shouldZoom
+            })
 
-                this.refs.layergroup.leafletElement.removeLayer(layer)
-                this.toggleAddAreaHandler
+            this.refs.layergroup.leafletElement.removeLayer(layer)
+            this.toggleAddAreaHandler
 
-                this.props.addNewAreaDBCloud({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
+            this.props.addNewAreaDBCloud({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
 
-            } else {
-                this.props.addNewAreaDB({newAreaNameVal, newAreaDescriptionVal, newAreaGeomVal})
-            }
         }
     }
 
@@ -92,7 +90,8 @@ class MainMap extends Component {
             addAreaHandler: !this.state.addAreaHandler,
             newAreaName: '',
             newAreaDescription: '',
-            inputError: false
+            inputError: false,
+            shouldZoom: !this.state.shouldZoom
         })
     }
 
@@ -104,8 +103,6 @@ class MainMap extends Component {
 
     _onCreate(e) {
         layer = e.layer
-        console.log(layer.toGeoJSON())
-        console.log(layer.toGeoJSON().geometry)
         this.toggleModal()
         this.handleNewGeometry(JSON.stringify(layer.toGeoJSON()))
         this.setState({
@@ -125,7 +122,8 @@ class MainMap extends Component {
         }
 
         this.setState({
-            addAreaHandler: !this.state.addAreaHandler
+            addAreaHandler: !this.state.addAreaHandler,
+            shouldZoom: !this.state.shouldZoom
         })
     }
 
@@ -137,11 +135,13 @@ class MainMap extends Component {
     }
 
     componentDidUpdate(){
-        let layergroup = this.refs.layergroup.leafletElement._layers
-        let layer = layergroup[Object.getOwnPropertyNames(layergroup)[0]]._layers
-        if (layer !== undefined) {
-            let layerBounds = layer[Object.getOwnPropertyNames(layer)[0]]._bounds
-            this.refs.map.leafletElement.fitBounds(layerBounds)
+        if (this.state.shouldZoom) {
+            let layergroup = this.refs.layergroup.leafletElement._layers
+            let layer = layergroup[Object.getOwnPropertyNames(layergroup)[0]]._layers
+            if (layer !== undefined) {
+                let layerBounds = layer[Object.getOwnPropertyNames(layer)[0]]._bounds
+                this.refs.map.leafletElement.fitBounds(layerBounds)
+            }
         }
     }
 
@@ -153,13 +153,9 @@ class MainMap extends Component {
                  <Popup><Label><p>Study Area Name: {this.props.use_area["0"].study_area}</p><p>Study Area Description: {this.props.use_area["0"].study_descr}</p></Label></Popup>
                  </GeoJSON>
          : null)
-        const intersectedLayer = (this.props.intersected_polys != null ?
-            <GeoJSON key={Math.random()} data={this.props.intersected_polys}>
-            </GeoJSON>
-            : null)
         return (
             <div className='map-wrapper'>
-                <Map className='Map' center={[39.739800, -104.911276]} zoom={10} zoomControl={false} ref="map">
+                <Map className='Map' center={[39.739800, -104.911276]} zoom={10} maxZoom={17} zoomControl={false} ref="map">
                     <ZoomControl position='topright'/>
                     <TileLayer url="http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png" attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'/>
                     <FeatureGroup ref="layergroup">
@@ -170,17 +166,16 @@ class MainMap extends Component {
                             marker: false
                         }}/>
                         {areaLayer}
-                        {intersectedLayer}
                     </FeatureGroup>
                 </Map>
                 {
                     this.state.addAreaHandler ? <Button className="add-btn" color="isDanger" onClick={this.toggleAddAreaHandler}>Cancel</Button>
-                    : <Button className="add-btn" color="isPrimary" onClick={this.toggleAddAreaHandler}>Add New Area</Button>
+                    : <Button className="add-btn" color="isPrimary" onClick={this.toggleAddAreaHandler}>Add New Study Area</Button>
                 }
                 <Modal isActive={this.state.editModal} type="card" headerContent="Add this Study Area to the Database" onCloseRequest={this.cancelArea}>
                     <Content>
                         <Label>Area Name</Label>
-                        <Input ref="areaNameField" type="text" placeholder="Arena Name" value={this.state.newAreaName} onChange={this.handleNameChange} help={(this.state.inputError ? {
+                        <Input ref="areaNameField" type="text" placeholder="Area Name" value={this.state.newAreaName} onChange={this.handleNameChange} help={(this.state.inputError ? {
                             color: 'isDanger',
                             text: 'Make sure that all fields are complete!',
                         } : null)}/>
@@ -189,8 +184,8 @@ class MainMap extends Component {
                             color: 'isDanger',
                             text: 'Make sure that all fields are complete!',
                         } : null)}/>
-                        <Button color="isSuccess" onClick={this.submitArea}>Add Area</Button>
-                        <Button color="isDanger" onClick={this.cancelArea} style={{marginLeft: "10px"}}>Remove Area</Button>
+                        <Button color="isSuccess" onClick={this.submitArea}>Add New Study Area</Button>
+                        <Button color="isDanger" onClick={this.cancelArea} style={{marginLeft: "10px"}}>Cancel</Button>
                     </Content>
                 </Modal>
             </div>
